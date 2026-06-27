@@ -1,0 +1,33 @@
+name: VideoApp
+options:
+  bundleIdPrefix: io.5g-emerge
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "16.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    DEVELOPMENT_TEAM: ""
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  VideoApp:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: VideoApp
+    resources:
+      - VideoApp/Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.5g-emerge.videoapp
+        INFOPLIST_FILE: VideoApp/Resources/Info.plist
+        CODE_SIGN_STYLE: Automatic
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    entitlements:
+      path: VideoApp/Resources/VideoApp.entitlements
+      properties:
+        com.apple.developer.networking.wifi-info: true
