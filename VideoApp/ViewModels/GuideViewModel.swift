@@ -18,12 +18,10 @@ class GuideViewModel: ObservableObject {
     private func buildChannels(_ epgChannels: [EpgChannel]) -> [GuideChannel] {
         epgChannels.enumerated().map { (i, ch) in
             let name = ch.channel ?? "Channel \(i + 1)"
-            let streams = EpgRepository.shared.resolveStreams(channelName: name)
             return GuideChannel(
                 id: ch.id ?? "ch_\(i)",
                 name: name,
-                hlsURL: streams.hls,
-                dashURL: streams.dash,
+                hlsURL: EpgRepository.shared.resolveHLS(channelName: name),
                 programmes: buildProgrammes(ch.events ?? [])
             )
         }

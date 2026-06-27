@@ -3,15 +3,9 @@ import Foundation
 class EpgRepository {
     static let shared = EpgRepository()
 
-    static let channelStreams: [String: (hls: String, dash: String)] = [
-        "rai scuola": (
-            hls: "https://live.cdn-a.media-streaming.testbed.5g-emerge.io/out/v1/rai-scuola-cmaf/rai-scuola-cmaf-channel/rai-scuola-cmaf-endpoint/index-hls.m3u8",
-            dash: "https://live.cdn-a.media-streaming.testbed.5g-emerge.io/out/v1/rai-scuola-cmaf/rai-scuola-cmaf-channel/rai-scuola-cmaf-endpoint/index-dash.mpd"
-        ),
-        "rai storia": (
-            hls: "https://live.cdn-a.media-streaming.testbed.5g-emerge.io/out/v1/rai-storia-cmaf/rai-storia-cmaf/rai-storia-cmaf-endpoint/index-hls.m3u8",
-            dash: "https://live.cdn-a.media-streaming.testbed.5g-emerge.io/out/v1/rai-storia-cmaf/rai-storia-cmaf/rai-storia-cmaf-endpoint/index-dash.mpd"
-        )
+    static let channelStreams: [String: String] = [
+        "rai scuola": "https://live-cdn-a.media-streaming.testbed.5g-emerge.io/out/v1/rai-scuola-cmaf/rai-scuola-cmaf-channel/rai-scuola-cmaf-endpoint/index-hls.m3u8",
+        "rai storia": "https://live-cdn-a.media-streaming.testbed.5g-emerge.io/out/v1/rai-storia-cmaf/rai-storia-cmaf/rai-storia-cmaf-endpoint/index-hls.m3u8"
     ]
     private static let fallbackHLS = "https://faredge.5gemerge.arcticspace.com/5G-EMERGE/Live/hls/crits_linear/crits_linear.m3u8"
 
@@ -20,7 +14,6 @@ class EpgRepository {
 
     func getChannels(epgURL: String) async -> [ChannelItem] {
         if let cached = channelCache { return cached }
-        // Try network
         if let url = URL(string: epgURL),
            let data = try? await URLSession.shared.data(from: url).0,
            let response = try? JSONDecoder().decode(EpgResponse.self, from: data) {
@@ -29,7 +22,6 @@ class EpgRepository {
             channelCache = channels
             return channels
         }
-        // Fall back to bundled asset
         if let url = Bundle.main.url(forResource: "rai_epg", withExtension: "json"),
            let data = try? Data(contentsOf: url),
            let response = try? JSONDecoder().decode(EpgResponse.self, from: data) {
@@ -43,12 +35,12 @@ class EpgRepository {
 
     func getRawCache() -> EpgResponse? { rawCache }
 
-    func resolveStreams(channelName: String) -> (hls: String, dash: String?) {
+    func resolveHLS(channelName: String) -> String {
         let key = channelName.lowercased()
-        for (k, v) in Self.channelStreams where key.contains(k) {
-            return (v.hls, v.dash)
+        for (k, url) in Self.channelStreams where key.contains(k) {
+            return url
         }
-        return (Self.fallbackHLS, nil)
+        return Self.fallbackHLS
     }
 
     private func parseChannels(_ response: EpgResponse) -> [ChannelItem] {
@@ -63,7 +55,6 @@ class EpgRepository {
                 if let d = event?.duration { parts.append("(\(d))") }
                 return parts.joined(separator: " ")
             }()
-            let streams = resolveStreams(channelName: name)
             let thumbURL = event?.image.flatMap { normalizeURL($0) }
             return ChannelItem(
                 id: ch.id ?? "channel_\(index)",
@@ -71,22 +62,20 @@ class EpgRepository {
                 currentProgramName: programName,
                 currentProgramTime: programTime,
                 thumbnailURL: thumbURL,
-                hlsURL: streams.hls,
-                dashURL: streams.dash
+                hlsURL: resolveHLS(channelName: name)
             )
         }
     }
 
     private func hardcodedFallback() -> [ChannelItem] {
-        Self.channelStreams.map { (name, streams) in
+        Self.channelStreams.map { (name, hlsURL) in
             ChannelItem(
                 id: name.replacingOccurrences(of: " ", with: "_"),
                 channelName: name.capitalized,
                 currentProgramName: "Live Programming",
                 currentProgramTime: "",
                 thumbnailURL: nil,
-                hlsURL: streams.hls,
-                dashURL: streams.dash
+                hlsURL: hlsURL
             )
         }
     }

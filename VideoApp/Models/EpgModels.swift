@@ -34,14 +34,12 @@ struct ChannelItem: Identifiable, Hashable {
     let currentProgramTime: String
     let thumbnailURL: URL?
     let hlsURL: String
-    let dashURL: String?
 }
 
 struct GuideChannel: Identifiable, Hashable {
     let id: String
     let name: String
     let hlsURL: String
-    let dashURL: String?
     let programmes: [GuideProgramme]
 }
 
