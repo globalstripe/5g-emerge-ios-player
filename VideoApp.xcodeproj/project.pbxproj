@@ -20,6 +20,7 @@
 		7821ACE2FB65E661CB067342 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D18BA49D9F5575DB1D589DA /* ContentView.swift */; };
 		7F0916D72279D0D3D8CADB6B /* GuideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE953EB63F4B33D219DB3FB5 /* GuideViewModel.swift */; };
 		80A33079F9C3B53F348ED984 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC9568D4630DE2EC0AB7A96 /* NetworkMonitor.swift */; };
+		84040BA56D0C7AD4886F9F9E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 294B15987BB3E26D0FE2A639 /* LaunchScreen.storyboard */; };
 		8431EE6066D1B9F0F02061B1 /* NetworkStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917458A1B751B7813F64731D /* NetworkStatusView.swift */; };
 		909CF49D869BD124A2B45BF3 /* VodRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01EDDC228BF4E70BB887491 /* VodRepository.swift */; };
 		92E6D68D81463A6DA9A167C4 /* NetworkInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81A6C2EBB5260EA584613D6 /* NetworkInfo.swift */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		14A496E17E6B209144FD2A0D /* GuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideView.swift; sourceTree = "<group>"; };
 		16E3174156DA67714A024229 /* LiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView.swift; sourceTree = "<group>"; };
+		294B15987BB3E26D0FE2A639 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2FDB9ECF3ADB4E7EB7F511E9 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		34D148DA4150E4872E425B20 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		4D18BA49D9F5575DB1D589DA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 		33BC5A3067F9CE3D5B369CC8 /* VideoApp */ = {
 			isa = PBXGroup;
 			children = (
+				294B15987BB3E26D0FE2A639 /* LaunchScreen.storyboard */,
 				1D9CFE8231EE600EB13198B2 /* App */,
 				42E9980791DD307B230E0254 /* Models */,
 				C838B8E515C0721CE367A7CF /* Resources */,
@@ -284,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B918292DAD1BB066BB7A8CD /* Assets.xcassets in Resources */,
+				84040BA56D0C7AD4886F9F9E /* LaunchScreen.storyboard in Resources */,
 				D407823678ED6F141F2BD98E /* rai_epg.json in Resources */,
 				A6104157D2E06CB1FDFE4E08 /* vod_sport.json in Resources */,
 			);

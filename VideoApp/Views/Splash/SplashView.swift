@@ -4,43 +4,41 @@ struct SplashView: View {
     @EnvironmentObject private var settings: AppSettings
     let onComplete: () -> Void
 
+    @State private var contentVisible  = false
     @State private var progressVisible = false
+
+    // Source PNG is 782 × 172 px
+    private let logoAspect: CGFloat = 782.0 / 172.0
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.white
 
-            VStack(spacing: 0) {
-                Spacer(minLength: 0)
-                    .frame(maxHeight: .infinity)
+            VStack(spacing: 32) {
+                Image("logo_5g_emerge")
+                    .resizable()
+                    .aspectRatio(logoAspect, contentMode: .fit)
+                    .padding(.horizontal, 48)
 
-                // Logo block (sits at ~45% vertical position via spacer ratio below)
-                VStack(spacing: 16) {
-                    Text("5G-EMERGE")
-                        .font(.system(size: 42, weight: .bold, design: .rounded))
-                        .foregroundStyle(accentColor)
-
-                    Text("Adaptive Video Streaming")
-                        .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.6))
-                        .tracking(1)
-                }
-
-                Spacer()
-                    .frame(maxHeight: .infinity)
-
-                // Indeterminate linear progress bar — fades in after 200ms
                 ProgressView()
                     .progressViewStyle(.linear)
                     .tint(accentColor)
                     .padding(.horizontal, 48)
-                    .padding(.bottom, 60)
                     .opacity(progressVisible ? 1 : 0)
                     .animation(.easeIn(duration: 0.4).delay(0.2), value: progressVisible)
             }
+            .frame(maxWidth: .infinity)
+            // Nudge above centre to match Android's ~45% vertical position
+            .offset(y: -60)
+            .opacity(contentVisible ? 1 : 0)
+            .animation(.easeIn(duration: 0.25), value: contentVisible)
         }
-        .preferredColorScheme(.dark)
-        .onAppear { progressVisible = true }
+        .ignoresSafeArea()
+        .preferredColorScheme(.light)
+        .onAppear {
+            contentVisible  = true
+            progressVisible = true
+        }
         .task { await prefetchAndWait() }
     }
 
@@ -54,14 +52,11 @@ struct SplashView: View {
 
     private func prefetchAndWait() async {
         await withTaskGroup(of: Void.self) { group in
-            // Pre-fetch VOD (local JSON — fast)
             group.addTask { _ = try? await VodRepository.shared.getVodItems() }
-            // Pre-fetch EPG
             group.addTask {
                 let url = await MainActor.run { settings.epgURL }
-                _ = try? await EpgRepository.shared.getChannels(epgURL: url)
+                _ = await EpgRepository.shared.getChannels(epgURL: url)
             }
-            // Minimum visible duration
             group.addTask { try? await Task.sleep(for: .seconds(2)) }
             for await _ in group { }
         }
