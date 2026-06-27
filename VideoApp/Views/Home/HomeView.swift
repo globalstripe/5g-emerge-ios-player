@@ -82,14 +82,20 @@ struct HeroCarouselView: View {
                                 .foregroundStyle(.white.opacity(0.8))
                                 .lineLimit(2)
                         }
-                        Button("▶  Play") { onTap(item) }
-                            .buttonStyle(.borderedProminent)
+                        Label("Play", systemImage: "play.fill")
+                            .font(.subheadline.bold())
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 7)
+                            .background(.tint, in: Capsule())
                             .padding(.top, 4)
                     }
                     .padding()
                 }
                 .frame(height: 220)
                 .clipped()
+                .contentShape(Rectangle())
+                .onTapGesture { onTap(item) }
             }
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
