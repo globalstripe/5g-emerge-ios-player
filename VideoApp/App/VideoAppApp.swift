@@ -5,12 +5,23 @@ struct VideoAppApp: App {
     @StateObject private var settings = AppSettings.shared
     @StateObject private var networkMonitor = NetworkMonitor.shared
 
+    @State private var splashDone = false
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(settings)
-                .environmentObject(networkMonitor)
-                .tint(accentColor(settings.themeAccent))
+            ZStack {
+                if splashDone {
+                    ContentView()
+                        .transition(.opacity)
+                } else {
+                    SplashView(onComplete: { splashDone = true })
+                        .transition(.opacity)
+                }
+            }
+            .environmentObject(settings)
+            .environmentObject(networkMonitor)
+            .tint(accentColor(settings.themeAccent))
+            .animation(.easeInOut(duration: 0.4), value: splashDone)
         }
     }
 

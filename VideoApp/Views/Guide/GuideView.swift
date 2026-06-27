@@ -32,7 +32,7 @@ struct GuideView: View {
             .navigationTitle("TV Guide")
         }
         .fullScreenCover(item: $selectedChannel) { channel in
-            PlayerView(title: channel.name, streamURL: channel.hlsURL)
+            PlayerView(title: channel.name, streamURL: channel.hlsURL, isLive: true)
         }
         .task { await vm.load(epgURL: settings.epgURL) }
     }

@@ -34,7 +34,7 @@ struct LiveView: View {
             }
         }
         .fullScreenCover(item: $selectedChannel) { channel in
-            PlayerView(title: channel.channelName, streamURL: channel.hlsURL)
+            PlayerView(title: channel.channelName, streamURL: channel.hlsURL, isLive: true)
         }
         .task { await vm.load(epgURL: settings.epgURL) }
     }

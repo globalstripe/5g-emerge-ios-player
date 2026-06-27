@@ -8,7 +8,6 @@ class VodRepository {
         "https://faredge.5gemerge.arcticspace.com/5G-EMERGE/VOD/hls/HQVideo/HQVideo.m3u8",
         "https://faredge.5gemerge.arcticspace.com/5G-EMERGE/VOD/hls/5G-Emerge/5G-Emerge.m3u8",
         "https://vod-testbed.gcdn.co/TOS/CMAF/TearsOfSteel.m3u8",
-        "https://vod-testbed.gcdn.co/TOS/CMAF/TearsOfSteel.mpd"
     ]
 
     private var cache: [VodItem]?
