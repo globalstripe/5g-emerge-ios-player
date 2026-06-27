@@ -77,18 +77,14 @@ class NetworkMonitor: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     private func cellularInfo() -> (generation: String, carrier: String?, roaming: Bool, tech: String?) {
         let info = CTTelephonyNetworkInfo()
-        var carrier: String?
         var tech: String?
-        let roaming = false
 
-        if let providers = info.serviceSubscriberCellularProviders {
-            carrier = providers.values.first?.carrierName
-        }
         if let techs = info.serviceCurrentRadioAccessTechnology {
             tech = techs.values.first
         }
         let generation = radioTechToGeneration(tech)
-        return (generation, carrier, roaming, tech)
+        // CTCarrier.carrierName deprecated iOS 16 — returns "--" on real devices; omitted.
+        return (generation, nil, false, tech)
     }
 
     private func radioTechToGeneration(_ tech: String?) -> String {
